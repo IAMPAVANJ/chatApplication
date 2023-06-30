@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Container, Text,Tabs,Tab,TabList,TabPanel,TabPanels } from "@chakra-ui/react";
 import Register from "../../Components/authentication/register/register";
 import Login from "../../Components/authentication/login/Login";
+import { useHistory } from "react-router-dom";
 const HomePage = () => {
+
+  const history = useHistory();
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem('userInfo'))
+    if(user){
+      history("/chats")
+    }
+
+  },[history]);
+
+
   return (
     <Container maxW="xl" centerContent>
       <Box
@@ -16,7 +28,7 @@ const HomePage = () => {
         borderWidth="1px"
       >
         <Text fontSize="4xl" fontFamily="Work sans" color="black">
-          Onpassive Chat
+          Chat-O-Chat 💬💑
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px" textColor="black">

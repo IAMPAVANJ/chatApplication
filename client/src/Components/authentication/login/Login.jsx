@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VStack } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import axios from "axios";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const Login = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
@@ -13,6 +15,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
+  useEffect(()=>{
+    localStorage.clear();
+  },[])
   const handleShow = () => {
     setShow(!show);
   };
@@ -26,7 +31,7 @@ const Login = () => {
         isClosable: true
       })
     } else {
-      let regEx = /^[A-Za-z0-9-/./_]+\@[A-Za-z0-9-/./_]+\.([A-Za-z]{2,3})$/;
+      let regEx = /^[A-Za-z0-9-/./_]+\@[A-Za-z0-9-/./_]+\.([A-Za-z]{2,3})$/
       const check = regEx.test(email)
       if (check === true) {
         try {
@@ -48,10 +53,11 @@ const Login = () => {
             isClosable: true,
             position: "top"
           });
-          sessionStorage.setItem("userInfo", JSON.stringify(data))
+          localStorage.setItem("userInfo", JSON.stringify(data))
           setLoading(false);
           history.push("/chats");
         } catch (err) {
+          console.log(err)
           setLoading(false)
           toast({
             title: "Error Occured",
@@ -72,7 +78,6 @@ const Login = () => {
         })
       }
     }
-
   };
 
   return (
@@ -114,7 +119,7 @@ const Login = () => {
         style={{ marginTop: 15 }}
         onClick={submitHandler}
       >
-        LogIN
+        LogIn
       </Button>
       <Button
         colorScheme="red"
@@ -124,6 +129,9 @@ const Login = () => {
       >
         Enter As a Guest
       </Button>
+      <Box boxShadow='dark-lg' p='4' rounded='md' bg='white'>
+    <Text fontSize='md'> Made By Pavan With lots of ❤️</Text>
+  </Box>
     </VStack>
   );
 };

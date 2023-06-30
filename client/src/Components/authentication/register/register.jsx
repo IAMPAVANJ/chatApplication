@@ -2,8 +2,10 @@ import { VStack } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react"
+import { Text } from "@chakra-ui/react";
 import { useToast } from '@chakra-ui/react'
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,7 +18,10 @@ const Register = () => {
   const [pic, setPic] = useState();
   const [loading, setLoading] = useState(false)
   const toast = useToast();
-  const history = useHistory()
+  const history = useHistory();
+  useEffect(()=>{
+    localStorage.clear();
+  },[])
   const handleShow = () => {
     setShow(!show)
   }
@@ -42,7 +47,7 @@ const Register = () => {
           setPic(data.data.url.toString());
           setLoading(false);
         }).catch(err => {
-          console.log(err)
+          console.log(err);
           setLoading(false);
         })
     } else {
@@ -68,6 +73,7 @@ const Register = () => {
       setLoading(false);
       return;
     }
+
     if (password !== confirmPassword) {
       toast({
         title: 'Kindly fill All Fields.',
@@ -93,18 +99,24 @@ const Register = () => {
         isClosable: true,
         position: "top"
       })
-      sessionStorage.setItem("userInfo", JSON.stringify(data))
-      history.push("/chats")
+      setName("")
+      setEmail("")
+      setPassword("")
+      setConfirmPassword("")
+      localStorage.setItem("userInfo", JSON.stringify(data))
+      history("/chats");
       setLoading(false);
     } catch (err) {
+      console.log(err)
       toast({
         title:"Error Occured",
         description:err.response.data.message,
         status:"error",
         duration:5000,
         isClosable:true,
-        position:"bottom"
+        position:"top"
       })
+      setLoading(false);
       console.log(err)
     }
   }
@@ -169,7 +181,7 @@ const Register = () => {
         </FormControl>
 
         <FormControl id="pic" >
-          <FormLabel>Upload Image</FormLabel>
+          <FormLabel>Upload Image(Optional)</FormLabel>
           <Input
             type="file"
             p={1.5}
@@ -188,7 +200,11 @@ const Register = () => {
           isLoading={loading}
         >Sign Up</Button>
 
+<Box boxShadow='dark-lg' p='4' rounded='md' bg='white'>
+    <Text fontSize='md'> Made By Pavan With lots of ❤️</Text>
+  </Box>
       </VStack>
+      
     );
   };
 

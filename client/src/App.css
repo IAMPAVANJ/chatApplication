@@ -4,3 +4,13 @@
     display: flex;
     background-image: linear-gradient(to right bottom, #072551, #223f6e, #395b8c, #5179aa, #6a98c9);
 }
+
+::-webkit-scrollbar{
+    width: 0px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgba(136, 136, 136, 0.281);
+}
+::-webkit-scrollbar-thumb:hover{
+    background: #555;
+}

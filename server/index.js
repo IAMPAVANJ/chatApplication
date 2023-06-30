@@ -3,7 +3,8 @@ const app  =express();
 const color = require('colors')
 const userRoutes = require("./Routes/userRoutes")
 const dotenv = require('dotenv');
-const cors = require("cors")
+const cors = require("cors");
+const chatRoutes = require("./Routes/chatRoutes");
 const { notFound,errorHandler } = require("./middlewares/errorMiddlware");
 const connect = require("./database/db");
 app.use(cors())
@@ -17,6 +18,7 @@ app.use(express.urlencoded({extended:false}))
 
 //api's
 app.use("/api/user",userRoutes)
+app.use("/api/chat",chatRoutes);
 app.use(notFound)
 app.use(errorHandler)
 
