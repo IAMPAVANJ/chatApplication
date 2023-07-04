@@ -29,7 +29,6 @@ const GroupChatModal = ({ children }) => {
     const toast = useToast();
     const { user, chats, setChats } = ChatState();
     const handleSearch = async (query) => {
-        console.log(query)
         setSearch(query)
         if (!query) {
             return;
@@ -43,7 +42,6 @@ const GroupChatModal = ({ children }) => {
             }
 
             const { data } = await axios.get(`http://localhost:5000/api/user/alluser?search=${query}`, config);
-            console.log(data)
             setLoading(false)
             setSearchResult(data);
         } catch (err) {
@@ -74,12 +72,10 @@ const GroupChatModal = ({ children }) => {
                     Authorization:`Bearer ${user.token}`
                 }
             }
-        
             const {data} = await axios.post('http://localhost:5000/api/chat/group',{
                 name:groupChatName,
                 users:JSON.stringify(selectedUsers.map((u)=>u._id))
             },config);
-            console.log(data)
             setChats([data,...chats])
             onClose();
             toast({
@@ -120,7 +116,6 @@ const GroupChatModal = ({ children }) => {
         }
 
         setSelectedUsers([...selectedUsers, userToAdd]);
-        console.log(selectedUsers);
     };
  
     
@@ -157,7 +152,7 @@ const GroupChatModal = ({ children }) => {
                         >
                             {selectedUsers.map(u => {
                                 return (
-                                    <UserBadgeItem key={user._id} handleDelete={()=>handleDelete(u)} user={u}  />
+                                    <UserBadgeItem key={u._id} handleDelete={()=>handleDelete(u)} user={u}  />
                                 )
                             })}
                         </Box>

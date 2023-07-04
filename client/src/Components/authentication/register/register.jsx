@@ -26,7 +26,6 @@ const Register = () => {
     setShow(!show)
   }
   const postDetails = (pics) => {
-    console.log(pics);
     setLoading(true)
     if (pics === undefined) {
       toast({
@@ -50,6 +49,7 @@ const Register = () => {
           console.log(err);
           setLoading(false);
         })
+
     } else {
       toast({
         title: 'Please Select Image!',
@@ -104,13 +104,14 @@ const Register = () => {
       setPassword("")
       setConfirmPassword("")
       localStorage.setItem("userInfo", JSON.stringify(data))
-      history("/chats");
+      history.push("/chats");
+      window.location.reload();
       setLoading(false);
     } catch (err) {
       console.log(err)
       toast({
         title:"Error Occured",
-        description:err.response.data.message,
+        // description:err.response.data.message,
         status:"error",
         duration:5000,
         isClosable:true,

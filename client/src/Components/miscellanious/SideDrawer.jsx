@@ -14,7 +14,7 @@ import {
     Input,
     useToast
 } from "@chakra-ui/react";
-import {Spinner} from '@chakra-ui/spinner';
+import { Spinner } from '@chakra-ui/spinner';
 import { Tooltip, Text } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
@@ -26,6 +26,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import axios from 'axios';
 import LoadingSpinner from "../chatLoading/ChatLoading";
 import UserListItem from "../userListItems/UserListItem";
+import { getSender } from "../../config/chatLogics";
 
 const SideDrawer = () => {
     const history = useHistory()
@@ -35,10 +36,11 @@ const SideDrawer = () => {
     const [loadingChat, setLoadingChat] = useState()
 
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { user,setSelectedChat,chats,setChats } = ChatState();
+    const { user, setSelectedChat, chats, setChats, notification, setNotification } = ChatState();
+
     const toast = useToast();
     const handleSearch = async () => {
-        if(!search){
+        if (!search) {
             toast({
                 title: "Please type in the search",
                 status: "warning",
@@ -58,7 +60,6 @@ const SideDrawer = () => {
             }
             const { data } = await axios.get(`http://localhost:5000/api/user/alluser?search=${search}`, config)
             setLoading(false)
-            console.log(data)
             setSearchResult(data)
         } catch (err) {
             console.log(err)
@@ -76,21 +77,20 @@ const SideDrawer = () => {
                 },
             }
             const { data } = await axios.post("http://localhost:5000/api/chat", { userId }, config);
-            if(!chats.find((c)=>c._id === data._id)) setChats([data,...chats]);
-          
-            console.log(data)
+            if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+
             setSelectedChat(data);
             setLoadingChat(false);
             onClose();
         } catch (err) {
             console.log(err)
             toast({
-                title:"Error fetching User data ",
-                description:err.message,
-                status:"error",
-                duration:3000,
-                isClosable:true,
-                position:"bottom-left"
+                title: "Error fetching User data ",
+                description: err.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "bottom-left"
             })
         }
     };
@@ -125,11 +125,24 @@ const SideDrawer = () => {
                 <div>
                     <Menu>
                         <MenuButton p={1}>
+
+                            {notification.length>0&& <h2 style={{backgroundColor:"gray",borderRadius:"50%"}}>{notification.length}</h2>}
                             <BellIcon fontSize="2xl" m={1} />
                         </MenuButton>
-                        {/* <MenuList>
-
-                        </MenuList> */}
+                        <MenuList pl={2}>
+                            {!notification.length && "No new Messages"}
+                            {notification.map(noti => {
+                                return(
+                                    <MenuItem key={noti._id} onClick={()=>{
+                                        setSelectedChat(noti.chat)
+                                        setNotification(notification.filter((n)=>n!==noti))
+                                    }}>
+                                    {noti.chat.isGroupChat ? `new Message ${noti.chat.chatName}` : `new message from ${getSender(user, noti.chat.users)}`}
+                                </MenuItem>
+                                )
+                                
+                            })}
+                        </MenuList>
                     </Menu>
                     <Menu>
                         <MenuButton as={Button}
@@ -177,7 +190,7 @@ const SideDrawer = () => {
                                 )
                             })
                         )}
-                        {loadingChat && <Spinner ml="auto" display="flex"/>}    
+                        {loadingChat && <Spinner ml="auto" display="flex" />}
                     </DrawerBody>
 
                 </DrawerContent>

@@ -42,20 +42,13 @@ const Login = () => {
           }
 
           const { data } = await axios.post("http://localhost:5000/api/user/login", { email, password }, config);
-          console.log(data)
           if (!data) {
             setLoading(false)
           }
-          toast({
-            title: "Login Successful",
-            status: 'success',
-            duration: 4000,
-            isClosable: true,
-            position: "top"
-          });
           localStorage.setItem("userInfo", JSON.stringify(data))
-          setLoading(false);
+         
           history.push("/chats");
+          window.location.reload();
         } catch (err) {
           console.log(err)
           setLoading(false)
@@ -121,14 +114,14 @@ const Login = () => {
       >
         LogIn
       </Button>
-      <Button
+      {/* <Button
         colorScheme="red"
         variant="solid"
         width="100%"
         onClick={() => { setEmail("guest@onpassive.com"); setPassword("onpassive") }}
       >
         Enter As a Guest
-      </Button>
+      </Button> */}
       <Box boxShadow='dark-lg' p='4' rounded='md' bg='white'>
     <Text fontSize='md'> Made By Pavan With lots of ❤️</Text>
   </Box>

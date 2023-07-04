@@ -7,14 +7,14 @@ import { ChakraProvider } from '@chakra-ui/react';
 import ChatProvider from './contextApi/chatProvioder';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ChatProvider>
-    <BrowserRouter>
+  <BrowserRouter>
+    <ChatProvider>
       <ChatProvider>
         <ChakraProvider>
           <App />
         </ChakraProvider>
       </ChatProvider>
-    </BrowserRouter>
-  </ChatProvider>
+    </ChatProvider>
+  </BrowserRouter>
 
 );

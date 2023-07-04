@@ -26,7 +26,7 @@ const MyChats = () => {
             };
 
             const { data } = await axios.get("http://localhost:5000/api/chat", config)
-            console.log(data)
+      
             setChats(data)
         } catch (err) {
             console.log(err)
