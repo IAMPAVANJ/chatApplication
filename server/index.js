@@ -31,7 +31,7 @@ const server = app.listen(port, () => { console.log(`server is up at ${port}`.bl
 const io = require("socket.io")(server, {
     pingTimeout: 60000,
     cors: {
-        origin: "chat-o-chat-by-pavan-4j7wqmpr2-iampavanj.vercel.app"
+        origin: "https://chat-o-chat-by-pavan.vercel.app/"
     },
 }); 
 
