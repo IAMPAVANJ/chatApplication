@@ -21,6 +21,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use("/api/user", userRoutes)
 app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/dummy",(req,res)=>{
+    res.send("Wake Up Server")
+})
 app.use(notFound);
 app.use(errorHandler);
 
