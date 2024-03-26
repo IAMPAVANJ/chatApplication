@@ -24,6 +24,10 @@ app.use("/api/messages", messageRoutes);
 app.use("/dummy",(req,res)=>{
     res.send("Wake Up Server")
 })
+app.get("/wakeUp",(req,res)=>{
+    res.send('wakeup Call to server')
+})
+
 app.use(notFound);
 app.use(errorHandler);
 
